@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud Security Seminar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f9ff;
+      --surface: rgba(255, 255, 255, 0.94);
+      --surface-strong: #ffffff;
+      --surface-soft: #eef5ff;
+      --line: #d8e6fb;
+      --text: #10304a;
+      --muted: #5f7894;
+      --primary: #1d5fd4;
+      --primary-dark: #143f96;
+      --accent: #4da3ff;
+      --shadow: 0 18px 50px rgba(29, 95, 212, 0.12);
+      --radius: 20px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      color: var(--text);
+      line-height: 1.75;
+      background:
+        radial-gradient(circle at top left, rgba(77, 163, 255, 0.14), transparent 28%),
+        radial-gradient(circle at top right, rgba(29, 95, 212, 0.10), transparent 24%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.84);
+      border-bottom: 1px solid rgba(216, 230, 251, 0.85);
+    }
+
+    .nav-inner {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 10px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      box-shadow: 0 10px 22px rgba(29, 95, 212, 0.24);
+      font-weight: 800;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .nav-links button {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .nav-links button:hover,
+    .nav-links button:focus-visible,
+    .nav-links button.active {
+      background: var(--surface-soft);
+      color: var(--primary-dark);
+      outline: none;
+      box-shadow: 0 10px 24px rgba(29, 95, 212, 0.10);
+    }
+
+    .nav-links button.active {
+      background: linear-gradient(135deg, rgba(29, 95, 212, 0.12), rgba(77, 163, 255, 0.18));
+      border-color: rgba(29, 95, 212, 0.20);
+    }
+
+    .tab-shell {
+      margin-top: 18px;
+    }
+
+    .tab-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px;
+      margin-bottom: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(216, 230, 251, 0.95);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 88px;
+      z-index: 850;
+      backdrop-filter: blur(14px);
+    }
+
+    .tab-strip button {
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .tab-strip button:hover,
+    .tab-strip button:focus-visible,
+    .tab-strip button.active {
+      transform: translateY(-1px);
+      color: var(--primary-dark);
+      outline: none;
+      box-shadow: 0 12px 28px rgba(29, 95, 212, 0.12);
+    }
+
+    .tab-strip button.active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+    }
+
+    .tab-panels {
+      display: grid;
+      gap: 18px;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .tab-panel .section-card {
+      padding: 30px;
+    }
+
+    .section-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(29, 95, 212, 0.08);
+      color: var(--primary);
+      font-size: 0.84rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+    }
+
+    .topic-grid.four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .topic-grid.five {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .hero {
+      padding: 60px 0 34px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel,
+    .topic-card,
+    .diagram-card,
+    .footer-card,
+    .conclusion-card {
+      background: var(--surface);
+      border: 1px solid rgba(216, 230, 251, 0.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -100px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(77, 163, 255, 0.16), transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      background: rgba(29, 95, 212, 0.08);
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    p {
+      margin-top: 0;
+    }
+
+    .hero h1 {
+      margin-bottom: 14px;
+      font-size: clamp(2.4rem, 5vw, 4.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+      color: var(--primary-dark);
+    }
+
+    .hero .subtitle {
+      margin-bottom: 16px;
+      font-size: 1.06rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .hero p {
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .hero-meta {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 12px;
+      color: var(--primary-dark);
+      font-weight: 500;
+    }
+
+    .hero-bullets {
+      margin-top: 16px;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 18px;
+    }
+
+    .info-card {
+      padding: 24px;
+    }
+
+    .info-card h3 {
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+    }
+
+    .info-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #f0f6ff;
+      border: 1px solid var(--line);
+      color: var(--primary-dark);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    main {
+      padding-bottom: 58px;
+    }
+
+    .section {
+      padding: 16px 0 26px;
+    }
+
+    .section[hidden] {
+      display: none;
+    }
+
+    .section-card {
+      padding: 30px;
+    }
+
+    .section-header {
+      margin-bottom: 22px;
+    }
+
+    .section-header h2 {
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+      font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+    }
+
+    .section-header p {
+      margin-bottom: 0;
+      color: var(--muted);
+      max-width: 80ch;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .topic-card {
+      padding: 22px;
+      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    }
+
+    .topic-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(77, 163, 255, 0.56);
+      box-shadow: 0 20px 36px rgba(29, 95, 212, 0.14);
+    }
+
+    .topic-card h3 {
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+      font-size: 1.12rem;
+    }
+
+    .topic-card p {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .bullet-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .bullet-list li {
+      margin-bottom: 10px;
+    }
+
+    .summary {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #cfe0f8;
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .topic-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .diagram-stack {
+      display: grid;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .diagram-card {
+      padding: 24px;
+    }
+
+    .diagram-title {
+      margin-bottom: 16px;
+      color: var(--primary-dark);
+      font-size: 1.06rem;
+      font-weight: 700;
+    }
+
+    .layer-diagram {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .layer-diagram.vertical {
+      grid-template-columns: 1fr;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .layer-box {
+      min-height: 132px;
+      padding: 18px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fdfefe 0%, #eef5ff 100%);
+      text-align: center;
+      transition: transform 0.25s ease;
+    }
+
+    .layer-box:hover {
+      transform: translateY(-4px);
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(29, 95, 212, 0.08);
+      color: var(--primary-dark);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .layer-box p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .connector {
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-size: 1.85rem;
+      font-weight: 700;
+    }
+
+    .layer-diagram.vertical .connector {
+      font-size: 1.55rem;
+      padding: 2px 0 8px;
+    }
+
+    .threat-diagram {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .threat-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .threat-box {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f7fbff;
+      color: var(--primary-dark);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .threat-arrow {
+      text-align: center;
+      color: var(--accent);
+      font-size: 1.7rem;
+      font-weight: 800;
+      padding: 0 8px;
+    }
+
+    .cloud-node {
+      min-height: 180px;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      box-shadow: 0 20px 42px rgba(29, 95, 212, 0.24);
+      text-align: center;
+    }
+
+    .cloud-node strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+    }
+
+    .cloud-node span {
+      max-width: 25ch;
+      opacity: 0.96;
+      font-size: 0.96rem;
+    }
+
+    .privacy-diagram {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .privacy-node {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #f7fbff;
+      text-align: center;
+    }
+
+    .privacy-node strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--primary-dark);
+    }
+
+    .privacy-node span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .privacy-flow {
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .flow-step {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f7fbff;
+      color: var(--primary-dark);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .flow-step span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 400;
+      font-size: 0.9rem;
+    }
+
+    .flow-arrow {
+      color: var(--accent);
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .diagram-note {
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(29, 95, 212, 0.06), rgba(77, 163, 255, 0.03));
+      border: 1px solid rgba(77, 163, 255, 0.22);
+      color: var(--muted);
+    }
+
+    .diagram-note strong {
+      color: var(--primary-dark);
+    }
+
+    .conclusion-card {
+      padding: 28px 30px;
+    }
+
+    .conclusion-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .footer-card {
+      padding: 20px 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section.active .section-card {
+      animation: floatIn 0.45s ease;
+    }
+
+    footer {
+      padding: 12px 0 34px;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .intro-grid,
+      .topic-grid,
+      .topic-grid.three,
+      .topic-grid.four,
+      .topic-grid.five,
+      .mini-grid,
+      .privacy-diagram,
+      .threat-diagram {
+        grid-template-columns: 1fr;
+      }
+
+      .layer-diagram {
+        grid-template-columns: 1fr;
+      }
+
+      .connector,
+      .threat-arrow {
+        display: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        padding-top: 36px;
+      }
+
+      .panel,
+      .section-card,
+      .diagram-card,
+      .conclusion-card {
+        padding: 22px;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .nav-links button {
+        padding: 9px 11px;
+        font-size: 0.84rem;
+      }
+
+      .tab-strip {
+        top: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="Cloud Security Seminar home">
+        <span class="brand-mark">C</span>
+        Cloud Security Seminar
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation" role="tablist">
+        <button type="button" class="active" id="tab-reference-model" data-tab-button="reference-model" role="tab" aria-controls="reference-model" aria-selected="true">Reference Model</button>
+        <button type="button" id="tab-security-issues" data-tab-button="security-issues" role="tab" aria-controls="security-issues" aria-selected="false">Security Issues</button>
+        <button type="button" id="tab-privacy-compliance" data-tab-button="privacy-compliance" role="tab" aria-controls="privacy-compliance" aria-selected="false">Privacy &amp; Compliance</button>
+        <button type="button" id="tab-conclusion" data-tab-button="conclusion" role="tab" aria-controls="conclusion" aria-selected="false">Conclusion</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="container hero-grid">
+      <article class="panel reveal">
+        <div class="eyebrow">Cloud Computing Seminar Presentation</div>
+        <h1>Cloud Security Seminar</h1>
+        <div class="subtitle">Security Reference Model | Security Issues | Privacy &amp; Compliance</div>
+        <p>
+          Cloud security means protecting cloud data, cloud users, and cloud services from attacks and mistakes.
+          It is important because our files, messages, and business records now live online instead of only on one device.
+        </p>
+        <ul class="bullet-list hero-bullets">
+          <li>It protects identity, data, applications, and network traffic.</li>
+          <li>It reduces the risk of hacking, data leaks, and service outages.</li>
+          <li>It helps users, companies, and governments trust cloud platforms.</li>
+        </ul>
+        <div class="hero-meta">
+          <div>Presenter: <strong>Palaram Rohit (2451-23-737-080)</strong></div>
+        </div>
+      </article>
+
+      <aside class="hero-side">
+        <div class="info-card reveal">
+          <h3>Why this topic matters</h3>
+          <ul class="bullet-list">
+            <li>Cloud security protects users from hackers and phishing.</li>
+            <li>It reduces mistakes such as public storage or weak passwords.</li>
+            <li>It keeps services online and supports safe digital growth.</li>
+          </ul>
+        </div>
+        <div class="info-card reveal">
+          <h3>What the seminar covers</h3>
+          <div class="pill-row">
+            <span class="pill">Identity control</span>
+            <span class="pill">Data protection</span>
+            <span class="pill">Network defense</span>
+            <span class="pill">Application safety</span>
+            <span class="pill">Privacy rules</span>
+            <span class="pill">Compliance</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <main>
+    <section class="section active" id="reference-model" role="tabpanel" aria-labelledby="tab-reference-model">
+      <div class="container section-card reveal">
+        <div class="section-header">
+          <h2>1. Security Reference Model</h2>
+          <p>
+            A security reference model is a layered way of protecting cloud systems.
+            It means different security controls protect different parts of the cloud so one weak point does not break everything.
+          </p>
+        </div>
+
+        <div class="intro-grid">
+          <article class="topic-card">
+            <h3>Definition</h3>
+            <p>
+              A security reference model shows how cloud protection is organized across identity, data, network, and application layers.
+              It helps beginners understand what each layer protects and why every layer is needed.
+            </p>
+          </article>
+
+          <article class="topic-card">
+            <h3>Key Points</h3>
+            <ul class="bullet-list">
+              <li>Layered security is useful because one control alone is never enough for a cloud system.</li>
+              <li>AWS and Google Cloud both use identity controls, storage protection, traffic rules, and application checks.</li>
+              <li>If one checkpoint fails, another layer can still block the attack or reduce the damage.</li>
+              <li>This model is helpful for beginners because it breaks a big security problem into smaller parts.</li>
+              <li>IAM controls who can enter the cloud and what they can do after login.</li>
+              <li>Data security protects stored data and moving data using encryption and access control.</li>
+              <li>Network security manages traffic so suspicious requests do not reach the service easily.</li>
+              <li>Application security checks the software so weak code does not expose sensitive information.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="diagram-stack">
+          <div class="diagram-card">
+            <div class="diagram-title">Layered Security View</div>
+            <div class="layer-diagram vertical">
+              <div class="layer-box">
+                <div class="tag">Application Security</div>
+                <p>Protects apps, APIs, and user actions from unsafe code or weak input handling.</p>
+              </div>
+              <div class="connector">&darr;</div>
+              <div class="layer-box">
+                <div class="tag">Network Security</div>
+                <p>Controls traffic, blocks suspicious requests, and keeps the cloud network organized.</p>
+              </div>
+              <div class="connector">&darr;</div>
+              <div class="layer-box">
+                <div class="tag">Data Security</div>
+                <p>Encrypts and protects information while it is stored or moving between systems.</p>
+              </div>
+              <div class="connector">&darr;</div>
+              <div class="layer-box">
+                <div class="tag">IAM</div>
+                <p>Checks identity, assigns permissions, and decides who can access each resource.</p>
+              </div>
+            </div>
+            <div class="diagram-note">
+              <strong>Simple idea:</strong> cloud security is strongest when every layer protects a different part of the system.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="security-issues" role="tabpanel" aria-labelledby="tab-security-issues" hidden>
+      <div class="container section-card reveal">
+        <div class="section-header">
+          <h2>2. Security Issues in Cloud Computing</h2>
+          <p>
+            Security issues are the risks that try to steal data, change data, or stop cloud services from working properly.
+            In simple words, they are the things that can make a cloud system unsafe, slow, or unreliable.
+          </p>
+        </div>
+
+        <div class="intro-grid">
+          <article class="topic-card">
+            <h3>Definition</h3>
+            <p>
+              Cloud security risks are threats that can expose data, take over accounts, damage applications, or make cloud services unavailable.
+              They matter because even one small mistake can affect many users at the same time.
+            </p>
+          </article>
+
+          <article class="topic-card">
+            <h3>Key Points</h3>
+            <ul class="bullet-list">
+              <li>Data breach means private information is seen by someone who should not have access.</li>
+              <li>Account hijacking happens when an attacker takes control of a user or admin account, often through phishing.</li>
+              <li>Malware is harmful software that can spy, steal, encrypt, or disrupt cloud systems.</li>
+              <li>Denial of Service attacks flood a service with fake requests so real users cannot use it properly.</li>
+              <li>Insider threats come from trusted people who misuse access by mistake or on purpose.</li>
+              <li>Weak passwords and reused logins make cloud accounts easier to attack.</li>
+              <li>Public storage settings or poor configuration can expose large amounts of data very quickly.</li>
+              <li>User awareness and monitoring are important because many attacks begin with simple human mistakes.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="diagram-stack">
+          <div class="diagram-card">
+            <div class="diagram-title">Threats Pointing Toward the Cloud</div>
+            <div class="threat-diagram">
+              <div class="threat-stack">
+                <div class="threat-box">Data Breach</div>
+                <div class="threat-box">Account Hijacking</div>
+                <div class="threat-box">Malware</div>
+              </div>
+              <div class="cloud-node">
+                <div>
+                  <strong>Cloud Service</strong>
+                  <span>Threats target data, users, apps, and availability.</span>
+                </div>
+              </div>
+              <div class="threat-stack">
+                <div class="threat-box">Denial of Service</div>
+                <div class="threat-box">Insider Threat</div>
+                <div class="threat-box">Phishing</div>
+              </div>
+            </div>
+            <div class="diagram-note">
+              <strong>Practical meaning:</strong> security teams must protect data, identity, software, and uptime at the same time.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy-compliance" role="tabpanel" aria-labelledby="tab-privacy-compliance" hidden>
+      <div class="container section-card reveal">
+        <div class="section-header">
+          <h2>3. Privacy and Compliance Issues</h2>
+          <p>
+            Privacy is about respecting personal data and user choice.
+            Compliance is about following laws, standards, and official rules that explain how data must be handled.
+          </p>
+        </div>
+
+        <div class="intro-grid">
+          <article class="topic-card">
+            <h3>Definition</h3>
+            <p>
+              Privacy means protecting personal information and respecting user choice.
+              Compliance means obeying the rules and laws that tell organizations how user data should be handled.
+            </p>
+          </article>
+
+          <article class="topic-card">
+            <h3>Key Points</h3>
+            <ul class="bullet-list">
+              <li>Privacy asks whether user data is being collected and used in a responsible way.</li>
+              <li>Compliance asks whether the organization is following required laws such as GDPR.</li>
+              <li>User consent should be clear, informed, and easy to understand before data is collected.</li>
+              <li>Encryption protects messages, files, and personal details from outsiders.</li>
+              <li>Apps like WhatsApp show why people care about message privacy and policy changes.</li>
+              <li>Good privacy builds trust, while good compliance reduces legal risk.</li>
+              <li>Cloud companies must think about data storage, sharing, and reporting very carefully.</li>
+              <li>Privacy and compliance work together, but they are not the same thing.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="diagram-stack">
+          <div class="diagram-card">
+            <div class="diagram-title">Privacy, Encryption, and Compliance Flow</div>
+            <div class="privacy-diagram">
+              <div class="privacy-node">
+                <strong>User Data</strong>
+                <span>Messages, photos, locations, and account details created in apps and websites.</span>
+              </div>
+              <div class="privacy-flow">
+                <div class="flow-step">Privacy<span>Explains how data should be collected and used</span></div>
+                <div class="flow-arrow">&darr;</div>
+                <div class="flow-step">Encryption<span>Makes the data unreadable to outsiders</span></div>
+                <div class="flow-arrow">&darr;</div>
+                <div class="flow-step">Compliance<span>Follows rules like GDPR and company policies</span></div>
+              </div>
+            </div>
+            <div class="diagram-note">
+              <strong>Simple meaning:</strong> user data must be handled with clear consent, strong protection, and legal responsibility.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="conclusion" role="tabpanel" aria-labelledby="tab-conclusion" hidden>
+      <div class="container conclusion-card reveal">
+        <div class="section-header">
+          <h2>4. Conclusion</h2>
+          <p>
+            Cloud security protects the data, users, and services that people depend on every day.
+            It is important in real life and in future technology careers because cloud systems are everywhere now.
+          </p>
+        </div>
+
+        <div class="intro-grid">
+          <article class="topic-card">
+            <h3>Definition</h3>
+            <p>
+              Cloud security is the practice of protecting cloud-based data, applications, and services from attacks, mistakes, and misuse.
+              It keeps digital life safe for users, businesses, and governments.
+            </p>
+          </article>
+
+          <article class="topic-card">
+            <h3>Key Points</h3>
+            <ul class="bullet-list">
+              <li>Cloud security protects everyday services like email, storage, banking, and online learning.</li>
+              <li>It helps stop theft, data leaks, service outages, and account misuse.</li>
+              <li>Strong security builds trust between users and cloud providers.</li>
+              <li>Privacy and compliance make cloud use safer and more responsible.</li>
+              <li>Learning cloud security is useful for future IT and cybersecurity jobs.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="diagram-stack">
+          <div class="diagram-card">
+            <div class="diagram-title">Final Summary Diagram</div>
+            <div class="layer-diagram vertical">
+              <div class="layer-box">
+                <div class="tag">Protect Data</div>
+                <p>Keep files, messages, and records safe from theft or exposure.</p>
+              </div>
+              <div class="connector">&darr;</div>
+              <div class="layer-box">
+                <div class="tag">Protect Users</div>
+                <p>Use login control, consent, and privacy rules to support trust.</p>
+              </div>
+              <div class="connector">&darr;</div>
+              <div class="layer-box">
+                <div class="tag">Protect Services</div>
+                <p>Keep cloud apps online, reliable, and ready for real users.</p>
+              </div>
+            </div>
+            <div class="diagram-note">
+              <strong>Final takeaway:</strong> cloud security is essential because it protects people, information, and the future of digital services.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-card reveal">Developed by Palaram Rohit (2451-23-737-080)</div>
+  </footer>
+
+  <script>
+    // Reveal each section as it scrolls into view.
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach((element) => observer.observe(element));
+
+    // Turn the top navigation into tabs so only one topic is open at a time.
+    const tabButtons = Array.from(document.querySelectorAll('[data-tab-button]'));
+    const tabPanels = Array.from(document.querySelectorAll('main .section'));
+
+    function activateTab(targetId, shouldScroll = true) {
+      tabPanels.forEach((panel) => {
+        const isActive = panel.id === targetId;
+        panel.hidden = !isActive;
+        panel.classList.toggle('active', isActive);
+        panel.setAttribute('aria-hidden', String(!isActive));
+      });
+
+      tabButtons.forEach((button) => {
+        const isActive = button.dataset.tabButton === targetId;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-selected', String(isActive));
+      });
+
+      if (shouldScroll) {
+        history.replaceState(null, '', `#${targetId}`);
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => activateTab(button.dataset.tabButton));
+      button.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+          return;
+        }
+
+        event.preventDefault();
+        const currentIndex = tabButtons.indexOf(button);
+        const direction = event.key === 'ArrowRight' ? 1 : -1;
+        const nextButton = tabButtons[(currentIndex + direction + tabButtons.length) % tabButtons.length];
+        nextButton.focus();
+        activateTab(nextButton.dataset.tabButton);
+      });
+    });
+
+    const initialHash = (location.hash || '').replace('#', '');
+    const initialPanel = tabPanels.find((panel) => panel.id === initialHash) ? initialHash : 'reference-model';
+    activateTab(initialPanel, Boolean(initialHash));
+
+    window.addEventListener('hashchange', () => {
+      const hashTab = (location.hash || '').replace('#', '');
+      if (tabPanels.some((panel) => panel.id === hashTab)) {
+        activateTab(hashTab, false);
+      }
+    });
+  </script>
+</body>
+</html>
