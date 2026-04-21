@@ -136,7 +136,7 @@
       flex-wrap: wrap;
       gap: 10px;
       padding: 12px;
-      margin-bottom: 18px;
+      margin: 0 0 18px auto;
       border-radius: 24px;
       background: rgba(255, 255, 255, 0.84);
       border: 1px solid rgba(216, 230, 251, 0.95);
@@ -145,6 +145,8 @@
       top: 88px;
       z-index: 850;
       backdrop-filter: blur(14px);
+      width: fit-content;
+      justify-content: flex-end;
     }
 
     .tab-strip button {
@@ -736,6 +738,9 @@
 
       .tab-strip {
         top: 110px;
+        width: 100%;
+        margin: 0 0 18px;
+        justify-content: center;
       }
     }
   </style>
@@ -747,12 +752,6 @@
         <span class="brand-mark">C</span>
         Cloud Security Seminar
       </a>
-      <nav class="nav-links" aria-label="Primary navigation" role="tablist">
-        <button type="button" class="active" id="tab-reference-model" data-tab-button="reference-model" role="tab" aria-controls="reference-model" aria-selected="true">Reference Model</button>
-        <button type="button" id="tab-security-issues" data-tab-button="security-issues" role="tab" aria-controls="security-issues" aria-selected="false">Security Issues</button>
-        <button type="button" id="tab-privacy-compliance" data-tab-button="privacy-compliance" role="tab" aria-controls="privacy-compliance" aria-selected="false">Privacy &amp; Compliance</button>
-        <button type="button" id="tab-conclusion" data-tab-button="conclusion" role="tab" aria-controls="conclusion" aria-selected="false">Conclusion</button>
-      </nav>
     </div>
   </header>
 
@@ -799,6 +798,15 @@
       </aside>
     </div>
   </section>
+
+  <div class="container">
+    <nav class="tab-strip nav-links" aria-label="Primary navigation" role="tablist">
+      <button type="button" class="active" id="tab-reference-model" data-tab-button="reference-model" role="tab" aria-controls="reference-model" aria-selected="true">Reference Model</button>
+      <button type="button" id="tab-security-issues" data-tab-button="security-issues" role="tab" aria-controls="security-issues" aria-selected="false">Security Issues</button>
+      <button type="button" id="tab-privacy-compliance" data-tab-button="privacy-compliance" role="tab" aria-controls="privacy-compliance" aria-selected="false">Privacy &amp; Compliance</button>
+      <button type="button" id="tab-conclusion" data-tab-button="conclusion" role="tab" aria-controls="conclusion" aria-selected="false">Conclusion</button>
+    </nav>
+  </div>
 
   <main>
     <section class="section active" id="reference-model" role="tabpanel" aria-labelledby="tab-reference-model">
