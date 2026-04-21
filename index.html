@@ -43,6 +43,10 @@
         linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
     }
 
+    body.sidebar-open {
+      overflow: hidden;
+    }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -127,70 +131,124 @@
       border-color: rgba(29, 95, 212, 0.20);
     }
 
-    .tab-shell {
-      margin-top: 18px;
-    }
-
-    .tab-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 12px;
-      margin: 0 0 18px auto;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.84);
-      border: 1px solid rgba(216, 230, 251, 0.95);
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 88px;
-      z-index: 850;
-      backdrop-filter: blur(14px);
-      width: fit-content;
-      justify-content: flex-end;
-    }
-
-    .tab-strip button {
-      border: 1px solid transparent;
-      background: rgba(255, 255, 255, 0.72);
-      color: var(--muted);
-      padding: 12px 16px;
+    .sidebar-toggle {
+      position: fixed;
+      top: 96px;
+      right: 20px;
+      z-index: 1240;
+      border: 1px solid rgba(29, 95, 212, 0.18);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      padding: 12px 18px;
       border-radius: 999px;
       font-family: inherit;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 16px 30px rgba(29, 95, 212, 0.24);
+    }
+
+    .sidebar-toggle:hover,
+    .sidebar-toggle:focus-visible {
+      transform: translateY(-1px);
+      outline: none;
+      box-shadow: 0 18px 34px rgba(29, 95, 212, 0.28);
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 48, 74, 0.18);
+      backdrop-filter: blur(1px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 1180;
+    }
+
+    .sidebar-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .topic-sidebar {
+      position: fixed;
+      top: 88px;
+      right: 18px;
+      width: min(340px, calc(100vw - 36px));
+      max-height: calc(100vh - 110px);
+      overflow: auto;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(216, 230, 251, 0.95);
+      box-shadow: var(--shadow);
+      transform: translateX(120%);
+      transition: transform 0.28s ease;
+      z-index: 1250;
+      backdrop-filter: blur(16px);
+    }
+
+    .topic-sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-kicker {
+      display: inline-block;
+      margin-bottom: 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .sidebar-head h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      line-height: 1.2;
+      color: var(--primary-dark);
+    }
+
+    .sidebar-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      background: #f7fbff;
+      color: var(--primary-dark);
+      border-radius: 50%;
+      font-size: 1.15rem;
+      font-family: inherit;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .tab-strip button:hover,
-    .tab-strip button:focus-visible,
-    .tab-strip button.active {
-      transform: translateY(-1px);
-      color: var(--primary-dark);
+    .sidebar-close:hover,
+    .sidebar-close:focus-visible {
       outline: none;
-      box-shadow: 0 12px 28px rgba(29, 95, 212, 0.12);
+      background: var(--surface-soft);
     }
 
-    .tab-strip button.active {
-      color: #fff;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: stretch;
+      width: 100%;
     }
 
-    .tab-panels {
-      display: grid;
-      gap: 18px;
-    }
-
-    .tab-panel {
-      display: none;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
-
-    .tab-panel .section-card {
-      padding: 30px;
+    .sidebar-nav button {
+      width: 100%;
+      text-align: left;
     }
 
     .section-chip {
@@ -727,20 +785,18 @@
         align-items: flex-start;
       }
 
-      .nav-links {
-        justify-content: flex-start;
+      .sidebar-toggle {
+        top: 80px;
+        right: 14px;
+        padding: 11px 15px;
+        font-size: 0.9rem;
       }
 
-      .nav-links button {
-        padding: 9px 11px;
-        font-size: 0.84rem;
-      }
-
-      .tab-strip {
-        top: 110px;
-        width: 100%;
-        margin: 0 0 18px;
-        justify-content: center;
+      .topic-sidebar {
+        top: 74px;
+        right: 12px;
+        width: calc(100vw - 24px);
+        max-height: calc(100vh - 92px);
       }
     }
   </style>
@@ -799,14 +855,25 @@
     </div>
   </section>
 
-  <div class="container">
-    <nav class="tab-strip nav-links" aria-label="Primary navigation" role="tablist">
+  <button class="sidebar-toggle" type="button" id="sidebar-toggle" aria-expanded="false" aria-controls="topic-sidebar">
+    Topics
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay" hidden></div>
+  <aside class="topic-sidebar" id="topic-sidebar" aria-hidden="true" inert>
+    <div class="sidebar-head">
+      <div>
+        <span class="sidebar-kicker">Choose Section</span>
+        <h2>Seminar Topics</h2>
+      </div>
+      <button type="button" class="sidebar-close" id="sidebar-close" aria-label="Close topics sidebar">×</button>
+    </div>
+    <nav class="sidebar-nav nav-links" aria-label="Primary navigation" role="tablist">
       <button type="button" class="active" id="tab-reference-model" data-tab-button="reference-model" role="tab" aria-controls="reference-model" aria-selected="true">Reference Model</button>
       <button type="button" id="tab-security-issues" data-tab-button="security-issues" role="tab" aria-controls="security-issues" aria-selected="false">Security Issues</button>
       <button type="button" id="tab-privacy-compliance" data-tab-button="privacy-compliance" role="tab" aria-controls="privacy-compliance" aria-selected="false">Privacy &amp; Compliance</button>
       <button type="button" id="tab-conclusion" data-tab-button="conclusion" role="tab" aria-controls="conclusion" aria-selected="false">Conclusion</button>
     </nav>
-  </div>
+  </aside>
 
   <main>
     <section class="section active" id="reference-model" role="tabpanel" aria-labelledby="tab-reference-model">
@@ -1076,7 +1143,53 @@
 
     revealElements.forEach((element) => observer.observe(element));
 
-    // Turn the top navigation into tabs so only one topic is open at a time.
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('topic-sidebar');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      sidebar.setAttribute('aria-hidden', 'false');
+      sidebar.removeAttribute('inert');
+      sidebarOverlay.hidden = false;
+      requestAnimationFrame(() => sidebarOverlay.classList.add('visible'));
+      sidebarToggle.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('sidebar-open');
+    }
+
+    function closeSidebar(returnFocus = true) {
+      sidebar.classList.remove('open');
+      sidebar.setAttribute('aria-hidden', 'true');
+      sidebar.setAttribute('inert', '');
+      sidebarOverlay.classList.remove('visible');
+      sidebarOverlay.hidden = true;
+      sidebarToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('sidebar-open');
+      if (returnFocus) {
+        sidebarToggle.focus();
+      }
+    }
+
+    sidebarToggle.addEventListener('click', () => {
+      const isOpen = sidebar.classList.contains('open');
+      if (isOpen) {
+        closeSidebar(false);
+      } else {
+        openSidebar();
+      }
+    });
+
+    sidebarClose.addEventListener('click', () => closeSidebar(true));
+    sidebarOverlay.addEventListener('click', () => closeSidebar(true));
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+        closeSidebar(true);
+      }
+    });
+
+    // Turn the topic list into tab controls so only one section is open at a time.
     const tabButtons = Array.from(document.querySelectorAll('[data-tab-button]'));
     const tabPanels = Array.from(document.querySelectorAll('main .section'));
 
@@ -1104,7 +1217,10 @@
     }
 
     tabButtons.forEach((button) => {
-      button.addEventListener('click', () => activateTab(button.dataset.tabButton));
+      button.addEventListener('click', () => {
+        activateTab(button.dataset.tabButton);
+        closeSidebar(true);
+      });
       button.addEventListener('keydown', (event) => {
         if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
           return;
@@ -1122,6 +1238,7 @@
     const initialHash = (location.hash || '').replace('#', '');
     const initialPanel = tabPanels.find((panel) => panel.id === initialHash) ? initialHash : 'reference-model';
     activateTab(initialPanel, Boolean(initialHash));
+    closeSidebar(false);
 
     window.addEventListener('hashchange', () => {
       const hashTab = (location.hash || '').replace('#', '');
